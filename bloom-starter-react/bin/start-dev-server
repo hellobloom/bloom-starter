@@ -1,5 +1,7 @@
 #!/bin/bash
 
+redis-server &
+
 bin/build-server
 
 echo "Starting server"

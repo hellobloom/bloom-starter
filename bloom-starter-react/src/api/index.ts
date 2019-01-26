@@ -1,3 +1,10 @@
 import * as http from "./http";
 
-export const ping = () => http.get(`/ping`);
+type BaseResponse = {
+  result: string;
+  message: string;
+};
+
+export const login = (): Promise<BaseResponse> => http.post(`/login`);
+
+export const test = (): Promise<BaseResponse> => http.get(`/test`);
