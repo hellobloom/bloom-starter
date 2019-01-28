@@ -2,4 +2,4 @@
 
 bin/start-dev-server &
 
-bin/start-dev-client
+(cd client && yarn start)

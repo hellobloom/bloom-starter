@@ -1,5 +1,3 @@
 #!/bin/bash
 
-echo "Starting client"
-
 PORT=3006 yarn react-scripts start
