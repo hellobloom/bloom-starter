@@ -45,14 +45,14 @@ const resetSocketConnection = () => {
 // Init websocket
 resetSocketConnection();
 
-// setInterval(() => {
-//   if (!socket || socket.readyState !== 1) {
-//     if (socket) {
-//       socket.close();
-//     }
-//     resetSocketConnection();
-//   }
-// }, 10000);
+setInterval(() => {
+  if (!socket || socket.readyState !== 1) {
+    if (socket) {
+      socket.close();
+    }
+    resetSocketConnection();
+  }
+}, 10000);
 
 const socketOn = (type: string, callback: Callback) => {
   if (typeof socketHandlers[type] === "undefined") {

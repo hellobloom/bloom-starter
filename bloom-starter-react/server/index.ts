@@ -7,13 +7,13 @@ import uuid from "uuid";
 import path from "path";
 import http from "http";
 
-import { applySocket } from "./socket/worker";
+import { applySocket, sendSocketMessage } from "./socket";
 import { loggedInSession } from "./middleware";
-import { sendSocketMessage } from "./socket/sender";
+import { env } from "./environment";
 
 const sessionParser = session({
   saveUninitialized: false,
-  secret: "$eCuRiTy",
+  secret: env.sessionSecret,
   resave: false
 });
 
@@ -63,13 +63,20 @@ app.delete("/logout", (req, res) => {
 });
 
 app.get("/test", loggedInSession, async (req, res) => {
-  await sendSocketMessage({
-    userId: req.session!.userId,
-    type: "share-kit-scan",
-    payload: JSON.stringify({})
-  });
+  try {
+    await sendSocketMessage({
+      userId: req.session!.userId,
+      type: "share-kit-scan",
+      payload: JSON.stringify({})
+    });
 
-  res.send({ result: "OK", message: "Message Sent" });
+    res.send({ result: "OK", message: "Message Sent" });
+  } catch {
+    res.status(500).send({
+      result: "ERROR",
+      message: "Something went wrong while sending message"
+    });
+  }
 });
 
 app.get("/", (req, res) => {
@@ -80,6 +87,6 @@ const server = http.createServer(app);
 
 applySocket(server, sessionParser);
 
-server.listen(process.env.PORT || 8080, () =>
-  console.log(`Listening on http://localhost:${process.env.PORT || 8080}`)
+server.listen(env.port, () =>
+  console.log(`Listening on http://localhost:${env.port}`)
 );
