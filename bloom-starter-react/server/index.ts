@@ -9,7 +9,6 @@ import http from "http";
 import { IVerifiedData } from "@bloomprotocol/share-kit/dist/src/types";
 
 import { applySocket, sendSocketMessage } from "./socket";
-import { loggedInSession } from "./middleware";
 import { env } from "./environment";
 
 const sessionParser = session({
@@ -67,7 +66,8 @@ app.delete("/clear-session", (req, res) => {
   }
 });
 
-app.post("/scan", loggedInSession, async (req, res) => {
+app.post("/scan", async (req, res) => {
+  console.log(JSON.stringify(req.body));
   try {
     const attestations: IVerifiedData[] = req.body.data;
     const nameAttestation = attestations.find(
@@ -88,7 +88,9 @@ app.post("/scan", loggedInSession, async (req, res) => {
       payload: JSON.stringify({ name })
     });
 
-    res.send({ result: "OK", message: "Message Sent" });
+    res
+      .status(200)
+      .json({ success: true, result: "OK", message: "Message Sent" });
   } catch (err) {
     if (err.message === "Missing Name") {
       res.status(404).send({
