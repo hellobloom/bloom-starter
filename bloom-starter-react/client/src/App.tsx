@@ -28,7 +28,7 @@ class App extends React.Component<{}, AppState> {
         requestData={{
           action: Action.attestation,
           token: this.state.token,
-          url: `${window.location.protocol}://${window.location.host}/scan`,
+          url: `${window.location.protocol}//${window.location.host}/scan`,
           org_logo_url: "",
           org_name: "",
           org_usage_policy_url: "",
