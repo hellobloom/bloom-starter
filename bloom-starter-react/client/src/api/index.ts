@@ -5,6 +5,5 @@ type BaseResponse = {
   message: string;
 };
 
-export const login = (): Promise<BaseResponse> => http.post(`/login`);
-
-export const test = (): Promise<BaseResponse> => http.get(`/test`);
+export const session = (): Promise<BaseResponse & { token: string }> =>
+  http.post(`/session`);

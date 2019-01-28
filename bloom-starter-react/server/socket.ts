@@ -9,7 +9,7 @@ type WebSocketMap = {
 const webSockets: WebSocketMap = {};
 
 export const sendSocketMessage = (message: {
-  userId: number;
+  userId: string;
   type: string;
   payload: string;
 }) => {

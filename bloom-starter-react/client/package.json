@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@bloomprotocol/share-kit": "^3.0.1",
     "@types/react": "^16.7.20",
     "@types/react-dom": "^16.0.11",
     "react": "^16.7.0",

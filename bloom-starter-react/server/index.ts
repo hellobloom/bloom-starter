@@ -6,6 +6,7 @@ import session from "express-session";
 import uuid from "uuid";
 import path from "path";
 import http from "http";
+import { IVerifiedData } from "@bloomprotocol/share-kit/dist/src/types";
 
 import { applySocket, sendSocketMessage } from "./socket";
 import { loggedInSession } from "./middleware";
@@ -38,16 +39,20 @@ app.use(compress());
 
 app.use(express.static(path.join(__dirname, "build/client")));
 
-app.post("/login", (req, res) => {
+app.post("/session", (req, res) => {
   if (req.session!.userId === undefined) {
     const id = uuid.v4();
     req.session!.userId = id;
   }
 
-  res.send({ result: "OK", message: "Session updated" });
+  res.send({
+    result: "OK",
+    message: "Session updated",
+    token: req.session!.userId
+  });
 });
 
-app.delete("/logout", (req, res) => {
+app.delete("/clear-session", (req, res) => {
   if (req.session) {
     req.session.destroy(err => {
       if (err) {
@@ -62,20 +67,40 @@ app.delete("/logout", (req, res) => {
   }
 });
 
-app.get("/test", loggedInSession, async (req, res) => {
+app.post("/scan", loggedInSession, async (req, res) => {
   try {
+    const attestations: IVerifiedData[] = req.body.data;
+    const nameAttestation = attestations.find(
+      attestation =>
+        attestation.target.attestationNode.type.type === "full-name"
+    );
+
+    const name =
+      nameAttestation && nameAttestation.target.attestationNode.data.data;
+
+    if (!name) {
+      throw new Error("Missing Name");
+    }
+
     await sendSocketMessage({
       userId: req.session!.userId,
       type: "share-kit-scan",
-      payload: JSON.stringify({})
+      payload: JSON.stringify({ name })
     });
 
     res.send({ result: "OK", message: "Message Sent" });
-  } catch {
-    res.status(500).send({
-      result: "ERROR",
-      message: "Something went wrong while sending message"
-    });
+  } catch (err) {
+    if (err.message === "Missing Name") {
+      res.status(404).send({
+        result: "ERROR",
+        message: "Full name is missing from completed attestations"
+      });
+    } else {
+      res.status(500).send({
+        result: "ERROR",
+        message: "Something went wrong while sending message"
+      });
+    }
   }
 });
 
