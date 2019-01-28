@@ -36,7 +36,7 @@ app.use(
 
 app.use(compress());
 
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "build/client")));
 
 app.post("/login", (req, res) => {
   if (req.session!.userId === undefined) {
@@ -80,7 +80,7 @@ app.get("/test", loggedInSession, async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(path.join(__dirname, "build/client", "index.html"));
 });
 
 const server = http.createServer(app);
