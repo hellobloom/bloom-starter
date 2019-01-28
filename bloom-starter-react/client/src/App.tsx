@@ -2,7 +2,7 @@ import React from "react";
 import { RequestQRCode, Action } from "@bloomprotocol/share-kit";
 
 import * as api from "./api";
-import { socketOn, socketOff, resetSocketConnection } from "./socket";
+import { socketOn, socketOff, initSocketConnection } from "./socket";
 
 import "./App.css";
 
@@ -24,10 +24,11 @@ class App extends React.Component<{}, AppState> {
     <div>
       Please Scan To Login
       <RequestQRCode
+        size={300}
         requestData={{
           action: Action.attestation,
           token: this.state.token,
-          url: "http://localhost:3006/scan",
+          url: `${window.location.protocol}://${window.location.host}/scan`,
           org_logo_url: "",
           org_name: "",
           org_usage_policy_url: "",
@@ -43,12 +44,12 @@ class App extends React.Component<{}, AppState> {
     api
       .session()
       .then(result => {
-        resetSocketConnection();
+        initSocketConnection();
         socketOn("share-kit-scan", this.handleQRScan);
         this.setState(() => ({ status: "ready", token: result.token }));
       })
       .catch(() => {
-        console.warn("Something went wrong while logging in");
+        console.warn("Something went wrong while starting a session");
       });
   }
 

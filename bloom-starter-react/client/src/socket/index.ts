@@ -22,7 +22,7 @@ const host: string = (() => {
 
 let socketHandlers: SocketHandlers = {};
 
-const resetSocketConnection = () => {
+const initSocketConnection = () => {
   socket = new WebSocket(host);
 
   socket.onmessage = (e: MessageEvent) => {
@@ -42,8 +42,7 @@ const resetSocketConnection = () => {
   };
 };
 
-// Init websocket
-resetSocketConnection();
+const resetSocketConnection = () => initSocketConnection();
 
 setInterval(() => {
   if (!socket || socket.readyState !== 1) {
@@ -77,4 +76,4 @@ const socketOff = (type: string, callback?: Callback) => {
   }
 };
 
-export { resetSocketConnection, socketOn, socketOff };
+export { initSocketConnection, resetSocketConnection, socketOn, socketOff };

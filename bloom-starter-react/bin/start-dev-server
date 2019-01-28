@@ -4,6 +4,6 @@ bin/build-server
 
 echo "Starting server"
 
-node --inspect=127.0.0.1:9231 build/server/index.js
+node --inspect=127.0.0.1:9231 build/index.js
 
 wait %1
