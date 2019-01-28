@@ -1,6 +1,6 @@
 {
   "name": "bloom-starter-react",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@types/compression": "^0.0.36",
