@@ -44,6 +44,19 @@ yarn start
 
 ### Deploy to Heroku
 
+Commands must be done from the root of the git project.
+
+#### Init heroku (one time)
+
+Assuming that your heroku app is called `bloom-starter-react`.
+
+```
+heroku login
+heroku git:remote -a bloom-starter-react
+```
+
+#### Push latest:
+
 ```
 git subtree push --prefix bloom-starter-react heroku master
 ```
