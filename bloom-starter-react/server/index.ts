@@ -48,7 +48,7 @@ app.post("/session", (req, res) => {
   }
 
   res.send({
-    result: "OK",
+    success: true,
     message: "Session updated",
     token: req.session!.userId
   });
@@ -59,11 +59,11 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
     req.session.destroy(err => {
       if (err) {
         res.status(500).send({
-          result: "ERROR",
+          success: false,
           message: "Something went wrong while destroying session"
         });
       } else {
-        res.send({ result: "OK", message: "Session destroyed" });
+        res.send({ success: true, message: "Session destroyed" });
       }
     });
   }
@@ -90,18 +90,16 @@ app.post("/scan", async (req, res) => {
       payload: JSON.stringify({ name })
     });
 
-    res
-      .status(200)
-      .json({ success: true, result: "OK", message: "Message Sent" });
+    res.status(200).json({ success: true, message: "Message Sent" });
   } catch (err) {
     if (err.message === "Missing Name") {
       res.status(404).send({
-        result: "ERROR",
+        success: false,
         message: "Full name is missing from completed attestations"
       });
     } else {
       res.status(500).send({
-        result: "ERROR",
+        success: false,
         message: "Something went wrong while sending message"
       });
     }
