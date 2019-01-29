@@ -30,7 +30,7 @@ class App extends React.Component<{}, AppState> {
             action: Action.attestation,
             token: this.state.token,
             url: `${window.location.protocol}//${
-              process.env.REACT_APP_HOST
+              window.location.hostname
             }/scan`,
             org_logo_url: "",
             org_name: "",
