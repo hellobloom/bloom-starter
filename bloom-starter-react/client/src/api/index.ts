@@ -1,7 +1,7 @@
 import * as http from "./http";
 
 type BaseResponse = {
-  result: string;
+  success: boolean;
   message: string;
 };
 
