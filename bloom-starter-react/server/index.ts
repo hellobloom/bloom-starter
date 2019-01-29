@@ -71,8 +71,6 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 
 app.post("/scan", async (req, res) => {
   try {
-    // const attestations: IVerifiedData[] = req.body.data;
-
     // TODO
     // Add .env var support for validating on chain attestations
     const verifiedData = await util.validateResponseData(req.body, {
@@ -92,7 +90,7 @@ app.post("/scan", async (req, res) => {
       data => data.type === "email"
     );
     const email = consumableEmailData && consumableEmailData.data;
-    if (!email || email.trim() !== "") {
+    if (!email || email.trim() === "") {
       throw new Error("Missing email");
     }
 
