@@ -7,7 +7,6 @@ import uuid from "uuid";
 import path from "path";
 import http from "http";
 import morgan from "morgan";
-import { IVerifiedData } from "@bloomprotocol/share-kit/dist/src/types";
 import { util } from "@bloomprotocol/share-kit";
 
 import { loggedInSession } from "./middleware";
