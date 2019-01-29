@@ -1,0 +1,13 @@
+#!/bin/bash
+
+bin/build-server
+
+(cd client && yarn build)
+
+if [ -d "build/client" ]; then
+  rm -rf build/client
+fi
+
+mkdir build/client
+
+cp client/build/* build/client/
