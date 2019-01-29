@@ -15,7 +15,7 @@ yarn deps
 ### Start app (client and server)
 
 ```
-yarn start
+yarn dev
 ```
 
 #### What does this do?
@@ -26,10 +26,18 @@ yarn start
 - Start the react app
   - The `REACT_APP_SERVER_URL` env var is set to the ngrok url.
 
+## Production
+
 ### Build app (client and server)
 
 This will build client and server code and output to the `build/` directory
 
 ```
 yarn build
+```
+
+### Start app (client and server)
+
+```
+yarn start
 ```
