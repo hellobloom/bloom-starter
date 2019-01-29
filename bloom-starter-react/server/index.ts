@@ -71,7 +71,6 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 
 app.post("/scan", async (req, res) => {
   try {
-    console.log({ data: req.body.data });
     const attestations: IVerifiedData[] = req.body.data;
     const nameAttestation = attestations.find(
       attestation =>
@@ -86,7 +85,7 @@ app.post("/scan", async (req, res) => {
     }
 
     await sendSocketMessage({
-      userId: req.session!.userId,
+      userId: req.body.token,
       type: "share-kit-scan",
       payload: JSON.stringify({ name })
     });
