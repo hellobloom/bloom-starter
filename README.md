@@ -4,6 +4,6 @@ Start developing on top of the Bloom Protocol by using one of the following star
 
 ## Starters
 
-| Starter                                     |           Stack            |               Deployed Example |
-| ------------------------------------------- | :------------------------: | -----------------------------: |
-| [bloom-starter-react](bloom-starter-react/) | TypeScript, Express, React | TODO: https://starter.bloom.co |
+| Starter                                     |           Stack            |         Deployed Example |
+| ------------------------------------------- | :------------------------: | -----------------------: |
+| [bloom-starter-react](bloom-starter-react/) | TypeScript, Express, React | https://starter.bloom.co |
