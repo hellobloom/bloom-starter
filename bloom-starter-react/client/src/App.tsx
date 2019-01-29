@@ -20,6 +20,7 @@ class App extends React.Component<{}, AppState> {
   };
 
   private renderLoading = () => <div>Loading...</div>;
+
   private renderReady = () => {
     // When this is not set fall back to the current url.
     // Good for when the app is deployed and the server URL is the same as the client.
@@ -27,27 +28,36 @@ class App extends React.Component<{}, AppState> {
       `${window.location.protocol}//${window.location.host}`}/scan`;
 
     return (
-      <div>
-        Please Scan To Login
-        <RequestQRCode
-          size={300}
-          requestData={{
-            action: Action.attestation,
-            token: this.state.token,
-            url: url,
-            // TODO
-            // Add .env var support for organization data
-            org_logo_url: "",
-            org_name: "",
-            org_usage_policy_url: "",
-            org_privacy_policy_url: "",
-            types: ["email"]
-          }}
-        />
-      </div>
+      <React.Fragment>
+        <p className="app__description">Please scan the QR code to continue</p>
+        <div className="app__qr-container">
+          <RequestQRCode
+            size={300}
+            requestData={{
+              action: Action.attestation,
+              token: this.state.token,
+              url: url,
+              // TODO
+              // Add .env var support for organization data
+              org_logo_url: "",
+              org_name: "",
+              org_usage_policy_url: "",
+              org_privacy_policy_url: "",
+              types: ["email"]
+            }}
+          />
+        </div>
+      </React.Fragment>
     );
   };
-  private renderScanned = () => <div>Welcome, {this.state.email}!</div>;
+
+  private renderScanned = () => (
+    <React.Fragment>
+      <p className="app__description">
+        Thank you for sharing! You told us your email is {this.state.email}
+      </p>
+    </React.Fragment>
+  );
 
   componentDidMount() {
     api
@@ -68,7 +78,8 @@ class App extends React.Component<{}, AppState> {
 
   render() {
     return (
-      <div className="App">
+      <div className="app">
+        <h1 className="app__header">Welcome to Bloom Starter</h1>
         {this.state.status === "loading" && this.renderLoading()}
         {this.state.status === "ready" && this.renderReady()}
         {this.state.status === "scanned" && this.renderScanned()}
