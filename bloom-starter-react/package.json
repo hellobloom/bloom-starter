@@ -24,7 +24,8 @@
   },
   "scripts": {
     "start": "./bin/start-dev",
-    "build": "./bin/build"
+    "build": "./bin/build",
+    "deps": "./bin/deps"
   },
   "devDependencies": {
     "ts-node": "^8.0.1",

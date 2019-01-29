@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Installing server deps"
+
+yarn install
+
+echo "Installing client deps"
+
+(cd client && yarn install)
