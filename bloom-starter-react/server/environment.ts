@@ -13,7 +13,10 @@ const requireEnvVar = <T>(value: T | undefined, name: string) => {
 const env = {
   port: requireEnvVar(process.env.PORT, "port"),
   sessionSecret: requireEnvVar(process.env.SESSION_SECRET, "sessionSecret"),
-  nodeEnv: process.env.NODE_ENV || "development"
+  nodeEnv: process.env.NODE_ENV || "development",
+  validateOnChain:
+    (process.env.VALIDATE_ON_CHAIN || "false").toLowerCase().trim() === "true",
+  web3Provider: process.env.WEB3_PROVIDER || ""
 };
 
 export { env };

@@ -71,11 +71,9 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 
 app.post("/scan", async (req, res) => {
   try {
-    // TODO
-    // Add .env var support for validating on chain attestations
     const verifiedData = await util.validateResponseData(req.body, {
-      validateOnChain: false,
-      web3Provider: ""
+      validateOnChain: env.validateOnChain,
+      web3Provider: env.web3Provider
     });
     if (verifiedData.errors.length) {
       res.status(400).json({
