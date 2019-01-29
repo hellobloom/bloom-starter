@@ -41,3 +41,9 @@ yarn build
 ```
 yarn start
 ```
+
+### Deploy to Heroku
+
+```
+git subtree push --prefix bloom-starter-react heroku master
+```
