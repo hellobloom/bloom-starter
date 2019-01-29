@@ -10,13 +10,16 @@ const requireEnvVar = <T>(value: T | undefined, name: string) => {
   return value;
 };
 
+const validateOnChain =
+  (process.env.VALIDATE_ON_CHAIN || "false").toLowerCase().trim() === "true";
 const env = {
-  port: requireEnvVar(process.env.PORT, "port"),
-  sessionSecret: requireEnvVar(process.env.SESSION_SECRET, "sessionSecret"),
+  port: requireEnvVar(process.env.PORT, "PORT"),
+  sessionSecret: requireEnvVar(process.env.SESSION_SECRET, "SESSION_SECRET"),
   nodeEnv: process.env.NODE_ENV || "development",
-  validateOnChain:
-    (process.env.VALIDATE_ON_CHAIN || "false").toLowerCase().trim() === "true",
-  web3Provider: process.env.WEB3_PROVIDER || ""
+  validateOnChain,
+  web3Provider: validateOnChain
+    ? requireEnvVar(process.env.WEB3_PROVIDER, "WEB3_PROVIDER")
+    : ""
 };
 
 export { env };
