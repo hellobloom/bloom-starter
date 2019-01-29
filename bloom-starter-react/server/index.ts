@@ -72,32 +72,31 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 app.post("/scan", async (req, res) => {
   try {
     const attestations: IVerifiedData[] = req.body.data;
-    const nameAttestation = attestations.find(
-      attestation =>
-        attestation.target.attestationNode.type.type === "full-name"
+    const emailAttestation = attestations.find(
+      attestation => attestation.target.attestationNode.type.type === "email"
     );
 
-    const name =
-      nameAttestation && nameAttestation.target.attestationNode.data.data;
+    const email =
+      emailAttestation && emailAttestation.target.attestationNode.data.data;
 
-    if (!name) {
-      throw new Error("Missing Name");
+    if (!email) {
+      throw new Error("Missing email");
     }
 
     await sendSocketMessage({
       userId: req.body.token,
       type: "share-kit-scan",
-      payload: JSON.stringify({ name })
+      payload: JSON.stringify({ name: email })
     });
 
     res
       .status(200)
       .json({ success: true, result: "OK", message: "Message Sent" });
   } catch (err) {
-    if (err.message === "Missing Name") {
+    if (err.message === "Missing email") {
       res.status(404).send({
         result: "ERROR",
-        message: "Full name is missing from completed attestations"
+        message: "Email is missing from completed attestations"
       });
     } else {
       res.status(500).send({

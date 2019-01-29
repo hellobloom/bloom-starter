@@ -39,7 +39,7 @@ class App extends React.Component<{}, AppState> {
             org_name: "",
             org_usage_policy_url: "",
             org_privacy_policy_url: "",
-            types: ["full-name"]
+            types: ["email"]
           }}
         />
       </div>
