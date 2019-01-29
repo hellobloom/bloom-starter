@@ -10,4 +10,4 @@ fi
 
 mkdir build/client
 
-cp client/build/* build/client/
+cp -a client/build/. build/client/
