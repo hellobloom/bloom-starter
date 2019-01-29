@@ -9,14 +9,14 @@ import "./App.css";
 type AppState = {
   status: "loading" | "ready" | "scanned";
   token: string;
-  name?: string;
+  email?: string;
 };
 
 class App extends React.Component<{}, AppState> {
   readonly state: AppState = { status: "loading", token: "" };
 
-  private handleQRScan = (payload: { name: string }) => {
-    this.setState(() => ({ status: "scanned", name: payload.name }));
+  private handleQRScan = (payload: { email: string }) => {
+    this.setState(() => ({ status: "scanned", email: payload.email }));
   };
 
   private renderLoading = () => <div>Loading...</div>;
@@ -35,17 +35,19 @@ class App extends React.Component<{}, AppState> {
             action: Action.attestation,
             token: this.state.token,
             url: url,
+            // TODO
+            // Add .env var support for organization data
             org_logo_url: "",
             org_name: "",
             org_usage_policy_url: "",
             org_privacy_policy_url: "",
-            types: ["full-name"]
+            types: ["email"]
           }}
         />
       </div>
     );
   };
-  private renderScanned = () => <div>Welcome, {this.state.name}!</div>;
+  private renderScanned = () => <div>Welcome, {this.state.email}!</div>;
 
   componentDidMount() {
     api

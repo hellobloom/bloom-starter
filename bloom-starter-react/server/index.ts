@@ -7,7 +7,7 @@ import uuid from "uuid";
 import path from "path";
 import http from "http";
 import morgan from "morgan";
-import { IVerifiedData } from "@bloomprotocol/share-kit/dist/src/types";
+import { util } from "@bloomprotocol/share-kit";
 
 import { loggedInSession } from "./middleware";
 import { applySocket, sendSocketMessage } from "./socket";
@@ -71,31 +71,39 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 
 app.post("/scan", async (req, res) => {
   try {
-    const attestations: IVerifiedData[] = req.body.data;
-    const nameAttestation = attestations.find(
-      attestation =>
-        attestation.target.attestationNode.type.type === "full-name"
+    const verifiedData = await util.validateResponseData(req.body, {
+      validateOnChain: env.validateOnChain,
+      web3Provider: env.web3Provider
+    });
+    if (verifiedData.errors.length) {
+      res.status(400).json({
+        success: false,
+        message: "Shared data is not valid",
+        verifiedData
+      });
+      return;
+    }
+
+    const consumableEmailData = verifiedData.data.find(
+      data => data.type === "email"
     );
-
-    const name =
-      nameAttestation && nameAttestation.target.attestationNode.data.data;
-
-    if (!name) {
-      throw new Error("Missing Name");
+    const email = consumableEmailData && consumableEmailData.data;
+    if (!email || email.trim() === "") {
+      throw new Error("Missing email");
     }
 
     await sendSocketMessage({
       userId: req.body.token,
       type: "share-kit-scan",
-      payload: JSON.stringify({ name })
+      payload: JSON.stringify({ email })
     });
 
     res.status(200).json({ success: true, message: "Message Sent" });
   } catch (err) {
-    if (err.message === "Missing Name") {
+    if (err.message === "Missing email") {
       res.status(404).send({
         success: false,
-        message: "Full name is missing from completed attestations"
+        message: "Email is missing from completed attestations"
       });
     } else {
       res.status(500).send({

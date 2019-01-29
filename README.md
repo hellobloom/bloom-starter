@@ -1,3 +1,9 @@
-1. Create React App
+# Bloom Starter
 
-- `npx create-react-app bloom-starter-react`
+Start developing on top of the Bloom Protocol by using one of the following starter projects.
+
+## Starters
+
+| Starter                                     |           Stack            |               Deployed Example |
+| ------------------------------------------- | :------------------------: | -----------------------------: |
+| [bloom-starter-react](bloom-starter-react/) | TypeScript, Express, React | TODO: https://starter.bloom.co |
