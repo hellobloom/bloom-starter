@@ -39,7 +39,7 @@ app.use(
 
 app.use(compress());
 
-app.use(express.static(path.join(__dirname, "build/client")));
+app.use(express.static(path.join(__dirname, "client")));
 
 app.post("/session", (req, res) => {
   if (req.session!.userId === undefined) {
@@ -115,7 +115,7 @@ app.post("/scan", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "build/client", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "index.html"));
 });
 
 const server = http.createServer(app);

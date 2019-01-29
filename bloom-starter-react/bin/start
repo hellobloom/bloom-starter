@@ -1,9 +1,5 @@
 #!/bin/bash
 
-./bin/deps
-
-./bin/build
-
 echo "Starting app"
 
 node build/index.js
