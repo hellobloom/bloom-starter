@@ -28,6 +28,7 @@
     "deps": "./bin/deps"
   },
   "devDependencies": {
+    "ngrok": "^3.1.0",
     "ts-node": "^8.0.1",
     "tsconfig-paths": "^3.7.0",
     "tslint": "^5.12.1",

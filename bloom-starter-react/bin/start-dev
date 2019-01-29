@@ -2,4 +2,4 @@
 
 bin/start-dev-server &
 
-(cd client && yarn start)
+node bin/start-ngrok

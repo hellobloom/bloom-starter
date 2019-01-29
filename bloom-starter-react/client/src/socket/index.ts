@@ -9,9 +9,9 @@ type SocketHandlers = {
 let socket: WebSocket;
 
 const host =
-  process.env.NODE_ENV === "development"
-    ? `ws://${process.env.REACT_APP_HOST}:8080`
-    : `wss://${process.env.REACT_APP_HOST}`;
+  window.location.hostname === "localhost"
+    ? `ws://${window.location.hostname}:8080`
+    : `wss://${window.location.hostname}`;
 
 let socketHandlers: SocketHandlers = {};
 
