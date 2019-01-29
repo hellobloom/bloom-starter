@@ -1,10 +1,10 @@
 #!/bin/bash
 
-bin/deps
-
 bin/build-server
 
-(cd client && yarn build)
+echo "Installing client deps"
+
+(cd client && yarn install && yarn build)
 
 if [ -d "build/client" ]; then
   rm -rf build/client
