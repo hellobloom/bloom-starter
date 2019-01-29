@@ -23,7 +23,8 @@ const initSocketConnection = () => {
       const decoded = JSON.parse(e.data);
       if (decoded instanceof Array) {
         const callbacks = socketHandlers[decoded[0]];
-        if (callbacks) callbacks.forEach(callback => callback(decoded[1]));
+        if (callbacks)
+          callbacks.forEach(callback => callback(JSON.parse(decoded[1])));
       }
     } catch (e) {
       console.log("Error in websocket callback", e);
