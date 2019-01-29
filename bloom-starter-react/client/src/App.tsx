@@ -29,9 +29,7 @@ class App extends React.Component<{}, AppState> {
           requestData={{
             action: Action.attestation,
             token: this.state.token,
-            url: `${window.location.protocol}//${
-              window.location.hostname
-            }/scan`,
+            url: `https://32e40e6e.ngrok.io/scan`,
             org_logo_url: "",
             org_name: "",
             org_usage_policy_url: "",
@@ -42,7 +40,7 @@ class App extends React.Component<{}, AppState> {
       </div>
     );
   };
-  private renderScanned = () => <div>Welcome, ${this.state.name}!</div>;
+  private renderScanned = () => <div>Welcome, {this.state.name}!</div>;
 
   componentDidMount() {
     api
