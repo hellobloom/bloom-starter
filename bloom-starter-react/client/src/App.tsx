@@ -37,12 +37,10 @@ class App extends React.Component<{}, AppState> {
               action: Action.attestation,
               token: this.state.token,
               url: url,
-              // TODO
-              // Add .env var support for organization data
-              org_logo_url: "",
-              org_name: "",
-              org_usage_policy_url: "",
-              org_privacy_policy_url: "",
+              org_logo_url: "https://bloom.co/favicon.png",
+              org_name: "Bloom Starter",
+              org_usage_policy_url: "https://bloom.co/legal/terms",
+              org_privacy_policy_url: "https://bloom.co/legal/privacy",
               types: ["email"]
             }}
           />
