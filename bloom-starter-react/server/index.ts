@@ -77,7 +77,7 @@ app.post("/scan", async (req, res) => {
     });
     if (verifiedData.errors.length) {
       res.status(400).json({
-        result: "ERROR",
+        success: false,
         message: "Shared data is not valid",
         verifiedData
       });
@@ -102,7 +102,7 @@ app.post("/scan", async (req, res) => {
   } catch (err) {
     if (err.message === "Missing email") {
       res.status(404).send({
-        result: "ERROR",
+        success: false,
         message: "Email is missing from completed attestations"
       });
     } else {
