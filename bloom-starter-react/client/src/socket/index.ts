@@ -1,3 +1,5 @@
+// import io from "socket.io-client";
+
 type Callback = (data: any) => void;
 
 type SocketHandlers = {
@@ -6,19 +8,10 @@ type SocketHandlers = {
 
 let socket: WebSocket;
 
-const host: string = (() => {
-  let protocol: string, port: string;
-
-  if (window.location.hostname === "localhost") {
-    protocol = "ws";
-    port = "8080";
-  } else {
-    protocol = "wss";
-    port = "443";
-  }
-
-  return `${protocol}://${window.location.hostname}:${port}`;
-})();
+const host =
+  process.env.NODE_ENV === "development"
+    ? `ws://${process.env.REACT_APP_HOST}:8080`
+    : `wss://${process.env.REACT_APP_HOST}`;
 
 let socketHandlers: SocketHandlers = {};
 
@@ -37,7 +30,7 @@ const initSocketConnection = () => {
     }
   };
 
-  socket.onclose = (e: Event) => {
+  socket.onclose = () => {
     return;
   };
 };

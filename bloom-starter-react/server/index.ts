@@ -6,8 +6,10 @@ import session from "express-session";
 import uuid from "uuid";
 import path from "path";
 import http from "http";
+import morgan from "morgan";
 import { IVerifiedData } from "@bloomprotocol/share-kit/dist/src/types";
 
+import { loggedInSession } from "./middleware";
 import { applySocket, sendSocketMessage } from "./socket";
 import { env } from "./environment";
 
@@ -20,6 +22,7 @@ const sessionParser = session({
 const app = express();
 
 app.use(helmet());
+app.use(morgan("tiny"));
 
 app.use(sessionParser);
 
@@ -51,7 +54,7 @@ app.post("/session", (req, res) => {
   });
 });
 
-app.delete("/clear-session", (req, res) => {
+app.delete("/clear-session", loggedInSession, (req, res) => {
   if (req.session) {
     req.session.destroy(err => {
       if (err) {
@@ -67,8 +70,8 @@ app.delete("/clear-session", (req, res) => {
 });
 
 app.post("/scan", async (req, res) => {
-  console.log(JSON.stringify(req.body));
   try {
+    console.log({ data: req.body.data });
     const attestations: IVerifiedData[] = req.body.data;
     const nameAttestation = attestations.find(
       attestation =>
