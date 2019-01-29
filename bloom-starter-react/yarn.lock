@@ -23,9 +23,9 @@
     web3-utils "^1.0.0-beta.36"
 
 "@bloomprotocol/share-kit@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@bloomprotocol/share-kit/-/share-kit-3.1.0.tgz#9c248fc0a557a0ec313123f5ea58a5c78cf1ecd0"
-  integrity sha512-mDUe6YTaLeT8SSCrG361mMJ+Su0/EWM2PP98MNl89XtAktShccH02Yk+soJNE9dGoEy68NlmcZsoKN9GMw4ApQ==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@bloomprotocol/share-kit/-/share-kit-3.1.1.tgz#16ed36b1a42986dd1e29741913824dc307e275e9"
+  integrity sha512-/GigSjytPm0aybZZk72sRwYz2JSyetk+ohT6jvzZexzWQx1y4CQtoi3S/KltXIMa8xvLwZWx5q5VUF4kW6pt5Q==
   dependencies:
     "@bloomprotocol/attestations-lib" "^3.0.3"
     "@types/lodash" "^4.14.120"

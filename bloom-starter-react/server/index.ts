@@ -8,6 +8,7 @@ import path from "path";
 import http from "http";
 import morgan from "morgan";
 import { IVerifiedData } from "@bloomprotocol/share-kit/dist/src/types";
+import { util } from "@bloomprotocol/share-kit";
 
 import { loggedInSession } from "./middleware";
 import { applySocket, sendSocketMessage } from "./socket";
@@ -71,22 +72,35 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 
 app.post("/scan", async (req, res) => {
   try {
-    const attestations: IVerifiedData[] = req.body.data;
-    const emailAttestation = attestations.find(
-      attestation => attestation.target.attestationNode.type.type === "email"
+    // const attestations: IVerifiedData[] = req.body.data;
+
+    // TODO
+    // Add .env var support for validating on chain attestations
+    const verifiedData = await util.validateResponseData(req.body, {
+      validateOnChain: false,
+      web3Provider: ""
+    });
+    if (verifiedData.errors.length) {
+      res.status(400).json({
+        result: "ERROR",
+        message: "Shared data is not valid",
+        verifiedData
+      });
+      return;
+    }
+
+    const consumableEmailData = verifiedData.data.find(
+      data => data.type === "email"
     );
-
-    const email =
-      emailAttestation && emailAttestation.target.attestationNode.data.data;
-
-    if (!email) {
+    const email = consumableEmailData && consumableEmailData.data;
+    if (!email || email.trim() !== "") {
       throw new Error("Missing email");
     }
 
     await sendSocketMessage({
       userId: req.body.token,
       type: "share-kit-scan",
-      payload: JSON.stringify({ name: email })
+      payload: JSON.stringify({ email })
     });
 
     res
