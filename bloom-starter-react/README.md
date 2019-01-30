@@ -6,17 +6,12 @@
 
 There are two parts to this app the server-side (express) and client-side (react).
 
-### Install dependencies
+### Geting started
 
-```
-yarn deps
-```
-
-### Start app (client and server)
-
-```
-yarn dev
-```
+1. `git clone https://github.com/hellobloom/bloom-starter.git`
+2. `cd bloom-starter-react`
+3. `yarn deps` (install dependencies for server and client)
+4. `yarn dev`
 
 #### What does this do?
 
