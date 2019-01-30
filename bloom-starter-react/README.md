@@ -11,7 +11,11 @@ There are two parts to this app the server-side (express) and client-side (react
 1. `git clone https://github.com/hellobloom/bloom-starter.git`
 2. `cd bloom-starter/bloom-starter-react`
 3. `yarn deps` (install dependencies for server and client)
-4. `yarn dev`
+4. Before starting up the dev server, you will need a `.env` file with
+   these variables set: `PORT`, `NODE_ENV`, and `SESSION_SECRET`. See
+   `.env.sample` for an example of where you `.env` should be and
+   what your `.env` should look like.
+5. `yarn dev`
 
 #### What does this do?
 
