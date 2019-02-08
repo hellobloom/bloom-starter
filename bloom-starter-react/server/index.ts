@@ -7,7 +7,7 @@ import uuid from "uuid";
 import path from "path";
 import http from "http";
 import morgan from "morgan";
-import { util } from "@bloomprotocol/share-kit";
+import { validateResponseData } from "@bloomprotocol/share-kit";
 
 import { loggedInSession } from "./middleware";
 import { applySocket, sendSocketMessage } from "./socket";
@@ -76,7 +76,7 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 
 app.post("/scan", async (req, res) => {
   try {
-    const verifiedData = await util.validateResponseData(req.body, {
+    const verifiedData = await validateResponseData(req.body, {
       validateOnChain: env.validateOnChain,
       web3Provider: env.web3Provider
     });
