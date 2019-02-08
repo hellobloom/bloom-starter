@@ -57,10 +57,11 @@ class App extends React.Component<{}, AppState> {
     </React.Fragment>
   );
 
-  componentDidMount() {
+  private acquireSession = () => {
     api
       .session()
       .then(result => {
+        console.log("api.session() result", result);
         initSocketConnection();
         socketOn("share-kit-scan", this.handleQRScan);
         this.setState(() => ({ status: "ready", token: result.token }));
@@ -68,6 +69,26 @@ class App extends React.Component<{}, AppState> {
       .catch(() => {
         console.warn("Something went wrong while starting a session");
       });
+  };
+
+  componentDidMount() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    if (token) {
+      api
+        .getReceivedData(token)
+        .then(result => {
+          console.log("api.getReceivedData() result", result);
+          this.setState(() => ({
+            status: "scanned",
+            email: result.receivedData.email
+          }));
+        })
+        .catch(() => this.acquireSession());
+      return;
+    }
+
+    this.acquireSession();
   }
 
   componentWillUnmount() {
