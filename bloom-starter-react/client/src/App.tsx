@@ -26,6 +26,9 @@ class App extends React.Component<{}, AppState> {
     // Good for when the app is deployed and the server URL is the same as the client.
     const url = `${process.env.REACT_APP_SERVER_URL ||
       `${window.location.protocol}//${window.location.host}`}/scan`;
+    const buttonCallbackUrl = `${window.location.protocol}//${
+      window.location.host
+    }?token=${this.state.token}`;
 
     return (
       <React.Fragment>
@@ -43,7 +46,7 @@ class App extends React.Component<{}, AppState> {
               types: ["email"]
             }}
             // TODO Add callback url
-            buttonCallbackUrl=""
+            buttonCallbackUrl={buttonCallbackUrl}
             qrOptions={{ size: 300 }}
           />
         </div>
