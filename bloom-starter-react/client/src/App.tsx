@@ -1,5 +1,5 @@
 import React from "react";
-import { RequestQRCode, Action } from "@bloomprotocol/share-kit";
+import { RequestElement, Action } from "@bloomprotocol/share-kit-react";
 
 import * as api from "./api";
 import { socketOn, socketOff, initSocketConnection } from "./socket";
@@ -31,8 +31,7 @@ class App extends React.Component<{}, AppState> {
       <React.Fragment>
         <p className="app__description">Please scan the QR code to continue</p>
         <div className="app__qr-container">
-          <RequestQRCode
-            size={300}
+          <RequestElement
             requestData={{
               action: Action.attestation,
               token: this.state.token,
@@ -43,6 +42,9 @@ class App extends React.Component<{}, AppState> {
               org_privacy_policy_url: "https://bloom.co/legal/privacy",
               types: ["email"]
             }}
+            // TODO Add callback url
+            buttonCallbackUrl=""
+            qrOptions={{ size: 300 }}
           />
         </div>
       </React.Fragment>

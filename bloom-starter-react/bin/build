@@ -4,7 +4,7 @@ bin/build-server
 
 echo "Installing client deps"
 
-(cd client && yarn install && yarn build)
+(cd client && npm install && npm run build)
 
 if [ -d "build/client" ]; then
   rm -rf build/client
