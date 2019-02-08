@@ -7,3 +7,8 @@ type BaseResponse = {
 
 export const session = (): Promise<BaseResponse & { token: string }> =>
   http.post(`/session`);
+
+export const getReceivedData = (
+  token: string
+): Promise<BaseResponse & { receivedData: { email: string } }> =>
+  http.get(`/received-data?token=${encodeURIComponent(token)}`);

@@ -7,11 +7,16 @@ import uuid from "uuid";
 import path from "path";
 import http from "http";
 import morgan from "morgan";
-import { util } from "@bloomprotocol/share-kit";
+import { validateResponseData } from "@bloomprotocol/share-kit";
 
 import { loggedInSession } from "./middleware";
 import { applySocket, sendSocketMessage } from "./socket";
 import { env } from "./environment";
+
+/**
+ * WARNING: This "database" is NOT intended to be used in production applications.
+ */
+const database: { [key: string]: string } = {};
 
 const sessionParser = session({
   saveUninitialized: false,
@@ -47,7 +52,7 @@ app.post("/session", (req, res) => {
     req.session!.userId = id;
   }
 
-  res.send({
+  return res.status(200).json({
     success: true,
     message: "Session updated",
     token: req.session!.userId
@@ -71,7 +76,7 @@ app.delete("/clear-session", loggedInSession, (req, res) => {
 
 app.post("/scan", async (req, res) => {
   try {
-    const verifiedData = await util.validateResponseData(req.body, {
+    const verifiedData = await validateResponseData(req.body, {
       validateOnChain: env.validateOnChain,
       web3Provider: env.web3Provider
     });
@@ -92,11 +97,16 @@ app.post("/scan", async (req, res) => {
       throw new Error("Missing email");
     }
 
-    await sendSocketMessage({
-      userId: req.body.token,
-      type: "share-kit-scan",
-      payload: JSON.stringify({ email })
-    });
+    const sharePayload = JSON.stringify({ email });
+    if (req.query["share-kit-from"] === "button") {
+      database[req.body.token] = sharePayload;
+    } else {
+      await sendSocketMessage({
+        userId: req.body.token,
+        type: "share-kit-scan",
+        payload: sharePayload
+      });
+    }
 
     res.status(200).json({ success: true, message: "Message Sent" });
   } catch (err) {
@@ -112,6 +122,23 @@ app.post("/scan", async (req, res) => {
       });
     }
   }
+});
+
+app.get("/received-data", async (req, res) => {
+  const receivedData = database[req.query.token];
+  if (receivedData) {
+    res.status(200).json({
+      success: true,
+      receivedData: JSON.parse(receivedData)
+    });
+    delete database[req.query.token];
+    return;
+  }
+
+  return res.status(400).json({
+    success: false,
+    message: "Something went wrong while attempting to query for received data"
+  });
 });
 
 app.get("/", (req, res) => {

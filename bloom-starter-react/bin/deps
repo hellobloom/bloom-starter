@@ -2,8 +2,8 @@
 
 echo "Installing server deps"
 
-yarn install
+npm install
 
 echo "Installing client deps"
 
-(cd client && yarn install)
+(cd client && npm install)

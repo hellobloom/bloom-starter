@@ -1,5 +1,3 @@
-// import io from "socket.io-client";
-
 type Callback = (data: any) => void;
 
 type SocketHandlers = {
