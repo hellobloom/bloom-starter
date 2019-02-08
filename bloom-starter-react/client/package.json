@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@bloomprotocol/share-kit-react": "git+ssh://git@github.com/hellobloom/share-kit-react.git#db67960890bafc57f2e5db11462e3e573b39be35",
+    "@bloomprotocol/share-kit-react": "hellobloom/share-kit-react#609f0be76b335ba0e0654dda0ee8a5ed7de7c3c6",
     "@types/react": "^16.7.20",
     "@types/react-dom": "^16.0.11",
     "react": "^16.7.0",
