@@ -33,23 +33,21 @@ class App extends React.Component<{}, AppState> {
     return (
       <React.Fragment>
         <p className="app__description">Please scan the QR code to continue</p>
-        <div className="app__qr-container">
-          <RequestElement
-            requestData={{
-              action: Action.attestation,
-              token: this.state.token,
-              url: url,
-              org_logo_url: "https://bloom.co/favicon.png",
-              org_name: "Bloom Starter",
-              org_usage_policy_url: "https://bloom.co/legal/terms",
-              org_privacy_policy_url: "https://bloom.co/legal/privacy",
-              types: ["email"]
-            }}
-            // TODO Add callback url
-            buttonCallbackUrl={buttonCallbackUrl}
-            qrOptions={{ size: 300 }}
-          />
-        </div>
+        <RequestElement
+          {...{ className: "app__request-element-container" }}
+          requestData={{
+            action: Action.attestation,
+            token: this.state.token,
+            url: url,
+            org_logo_url: "https://bloom.co/favicon.png",
+            org_name: "Bloom Starter",
+            org_usage_policy_url: "https://bloom.co/legal/terms",
+            org_privacy_policy_url: "https://bloom.co/legal/privacy",
+            types: ["email"]
+          }}
+          buttonCallbackUrl={buttonCallbackUrl}
+          qrOptions={{ size: 300 }}
+        />
       </React.Fragment>
     );
   };
