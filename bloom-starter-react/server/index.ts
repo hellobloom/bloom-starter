@@ -81,6 +81,7 @@ app.post('/scan', async (req, res) => {
       web3Provider: env.web3Provider
     })
     if (verifiedData.kind === 'invalid') {
+      console.log(`DEBUG scan`)
       res.status(400).json({
         success: false,
         message: 'Shared data is not valid',
