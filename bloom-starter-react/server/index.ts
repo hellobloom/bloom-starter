@@ -80,10 +80,7 @@ app.post('/scan', async (req, res) => {
       validateOnChain: env.validateOnChain,
       web3Provider: env.web3Provider
     })
-    console.log(`DEBUG Received: ${JSON.stringify(req.body)}`)
-    console.log(`DEBUG verified: ${JSON.stringify(verifiedData)}`)
     if (verifiedData.kind === 'invalid') {
-      console.log(`DEBUG scan`)
       res.status(400).json({
         success: false,
         message: 'Shared data is not valid',
@@ -91,7 +88,6 @@ app.post('/scan', async (req, res) => {
       })
       return
     }
-
     const consumableEmailData = verifiedData.data.verifiableCredential.find(
       data => data.type === 'email'
     )
