@@ -57,5 +57,5 @@ heroku git:remote -a bloom-starter-react
 #### Push latest:
 
 ```
-git subtree push --prefix bloom-starter-react heroku master
+git push heroku `git subtree split --prefix bloom-starter-react <BRANCH_NAME>`:master
 ```
