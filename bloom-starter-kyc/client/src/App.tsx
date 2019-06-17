@@ -43,7 +43,7 @@ class App extends React.Component<{}, AppState> {
             org_name: "Bloom Starter",
             org_usage_policy_url: "https://bloom.co/legal/terms",
             org_privacy_policy_url: "https://bloom.co/legal/privacy",
-            types: ["email", "full-name", "id-document", "sanction-screen", "pep-screen"]
+            types: ["email", "full-name", "id-document", "sanction-screen"]
           }}
           buttonCallbackUrl={buttonCallbackUrl}
           qrOptions={{ size: 300 }}
@@ -101,7 +101,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div className="app">
-        <h1 className="app__header">Welcome to Bloom Starter</h1>
+        <h1 className="app__header">Welcome to Bloom Starter for KYC</h1>
         {this.state.status === "loading" && this.renderLoading()}
         {this.state.status === "ready" && this.renderReady()}
         {this.state.status === "scanned" && this.renderScanned()}
