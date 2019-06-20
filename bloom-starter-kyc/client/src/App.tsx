@@ -45,7 +45,7 @@ class App extends React.Component<{}, AppState> {
             org_privacy_policy_url: "https://bloom.co/legal/privacy",
             types: ["email", "full-name", "id-document", "sanction-screen"]
           }}
-          buttonCallbackUrl={buttonCallbackUrl}
+          buttonOptions={{ callbackUrl: buttonCallbackUrl }}
           qrOptions={{ size: 300 }}
         />
       </React.Fragment>
