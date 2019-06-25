@@ -75,11 +75,13 @@ app.delete('/clear-session', loggedInSession, (req, res) => {
 })
 
 app.post('/scan', async (req, res) => {
+  console.log(`Received unvalidated data: ${JSON.stringify(req.body)}`)
   try {
     const verifiedData = await validateUntypedResponseData(req.body, {
       validateOnChain: env.validateOnChain,
       web3Provider: env.web3Provider
     })
+    console.log(`Validated: ${JSON.stringify(verifiedData)}`)
     if (verifiedData.kind === 'invalid') {
       res.status(400).json({
         success: false,
