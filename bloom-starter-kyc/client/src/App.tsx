@@ -43,7 +43,7 @@ class App extends React.Component<{}, AppState> {
             org_name: 'Bloom Starter',
             org_usage_policy_url: 'https://bloom.co/legal/terms',
             org_privacy_policy_url: 'https://bloom.co/legal/privacy',
-            types: ['email', 'google']
+            types: ['google', 'email']
           }}
           buttonCallbackUrl={buttonCallbackUrl}
           qrOptions={{ size: 300 }}
