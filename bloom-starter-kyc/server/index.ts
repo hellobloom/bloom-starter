@@ -110,7 +110,7 @@ app.post('/scan', async (req, res) => {
       })
     }
 
-    res.status(200).json({ success: true, message: 'Message Sent' })
+    res.status(200)
   } catch (err) {
     if (err.message === 'Missing email') {
       res.status(404).send({
