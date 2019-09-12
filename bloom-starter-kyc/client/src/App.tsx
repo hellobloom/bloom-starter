@@ -10,6 +10,7 @@ type AppState = {
   status: "loading" | "ready" | "scanned";
   token: string;
   email?: string;
+  idDoc?: string;
 };
 
 class App extends React.Component<{}, AppState> {
@@ -55,7 +56,7 @@ class App extends React.Component<{}, AppState> {
   private renderScanned = () => (
     <React.Fragment>
       <p className="app__description">
-        Thank you for sharing! You told us your email is {this.state.email}
+        Thank you for sharing! You told us your email is {this.state.email} and your doc is {this.state.idDoc}
       </p>
     </React.Fragment>
   );
