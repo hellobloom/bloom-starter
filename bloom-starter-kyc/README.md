@@ -59,3 +59,9 @@ heroku git:remote -a bloom-starter-kyc
 ```
 git subtree push --prefix bloom-starter-kyc heroku master
 ```
+
+#### Push latest (not master branch):
+
+```
+git push -f heroku `git subtree split --prefix bloom-starter-kyc SIDE_BRANCH_NAME`:master
+```

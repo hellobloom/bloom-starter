@@ -7,15 +7,62 @@ import {socketOn, socketOff, initSocketConnection} from './socket'
 import './App.css'
 import {IBaseAttIDDocData} from '@bloomprotocol/attestations-lib/dist/AttestationData'
 
+type TImgState = {
+  height: number
+  width: number
+  show: boolean
+}
+
 type AppState = {
   status: 'loading' | 'ready' | 'scanned'
   token: string
   email?: string
   idDoc?: IBaseAttIDDocData
+  front: TImgState
+  back: TImgState
+  selfie: TImgState
+}
+
+/**
+ * Source: https://stackoverflow.com/a/14731922/1165441
+ * Conserve aspect ratio of the original region. Useful when shrinking/enlarging
+ * images to fit into a certain area.
+ *
+ * @param {Number} srcWidth width of source image
+ * @param {Number} srcHeight height of source image
+ * @param {Number} maxWidth maximum available width
+ * @param {Number} maxHeight maximum available height
+ * @return {Object} { width, height }
+ */
+function calculateAspectRatioFit(imgEl: HTMLImageElement) {
+  const srcHeight = imgEl.naturalHeight
+  const srcWidth = imgEl.naturalWidth
+  const maxWidth = 360
+  const maxHeight = 480
+  var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight)
+  return {width: srcWidth * ratio, height: srcHeight * ratio}
 }
 
 class App extends React.Component<{}, AppState> {
-  readonly state: AppState = {status: 'loading', token: ''}
+  readonly state: AppState = {
+    status: 'loading',
+    token: '',
+    front: {
+      show: false,
+      height: 0,
+      width: 0,
+    },
+    back: {
+      show: false,
+      height: 0,
+      width: 0,
+    },
+    selfie: {
+      show: false,
+      height: 0,
+      width: 0,
+    },
+  }
 
   private handleQRScan = (payload: {email: string; idDoc: IBaseAttIDDocData}) => {
     console.log(typeof payload.idDoc)
@@ -61,6 +108,7 @@ class App extends React.Component<{}, AppState> {
     if (!idDoc) {
       return (
         <span>
+          {' '}
           unexpectedly missing{' '}
           <span role="img" aria-label="sweat-smile">
             😅
@@ -69,15 +117,7 @@ class App extends React.Component<{}, AppState> {
         </span>
       )
     }
-    const {
-      authentication_result,
-      // biographic,
-      // country,
-      // date,
-      name,
-      facematch_result,
-      images,
-    } = idDoc
+    const {authentication_result, name, facematch_result, images} = idDoc
     const success = (
       <span role="img" aria-label="green-bg-white-checkmark">
         ✅
@@ -99,44 +139,86 @@ class App extends React.Component<{}, AppState> {
       </span>
     )
     return (
-      <div>
-        <div>
-          Authentication:{' '}
-          {authentication_result === 'passed'
-            ? success
-            : authentication_result === 'failed'
-            ? fail
-            : warning}
-        </div>
-        <div>
-          Facematch:{' '}
-          {facematch_result && facematch_result.is_match ? success : warning}
-        </div>
-        <div>Name: {name ? name : unknown}</div>
-
-        {images && (
+      <>
+        .
+        <div className={'id-doc-wrap'}>
           <div>
-            <img
-              src={`data:image/png;base64,${images.front}`}
-              alt="front"
-              height={300}
-              width={500}
-            />
-            <img
-              src={`data:image/png;base64,${images.back}`}
-              alt="back"
-              height={300}
-              width={500}
-            />
-            <img
-              src={`data:image/png;base64,${images.selfie}`}
-              alt="selfie"
-              height={500}
-              width={360}
-            />
+            Authentication:{' '}
+            {authentication_result === 'passed'
+              ? success
+              : authentication_result === 'failed'
+              ? fail
+              : warning}
           </div>
-        )}
-      </div>
+          <div>
+            Facematch:{' '}
+            {facematch_result && facematch_result.is_match ? success : warning}
+          </div>
+          <div>Name: {name ? name : unknown}</div>
+
+          {images && (
+            <div className={'id-doc-img-wrap'}>
+              <label>{images.back ? 'Front' : 'Main'}</label>
+              <img
+                className={'id-doc-img'}
+                src={`data:image/png;base64,${images.front}`}
+                alt="front"
+                height={this.state.front.height}
+                width={this.state.front.width}
+                style={{display: this.state.front.show ? 'inline-block' : 'none'}}
+                onLoad={e => {
+                  this.setState({
+                    front: {
+                      ...calculateAspectRatioFit(e.target as HTMLImageElement),
+                      show: true,
+                    },
+                  })
+                }}
+              />
+
+              {images.back && (
+                <>
+                  <label>Back</label>
+                  <img
+                    className={'id-doc-img'}
+                    src={`data:image/png;base64,${images.back}`}
+                    alt="back"
+                    height={this.state.back.height}
+                    width={this.state.back.width}
+                    style={{display: this.state.back.show ? 'inline-block' : 'none'}}
+                    onLoad={e => {
+                      this.setState({
+                        back: {
+                          ...calculateAspectRatioFit(e.target as HTMLImageElement),
+                          show: true,
+                        },
+                      })
+                    }}
+                  />
+                </>
+              )}
+
+              <label>Selfie</label>
+              <img
+                className={'id-doc-img'}
+                src={`data:image/png;base64,${images.selfie}`}
+                alt="selfie"
+                height={this.state.selfie.height}
+                width={this.state.selfie.width}
+                style={{display: this.state.selfie.show ? 'inline-block' : 'none'}}
+                onLoad={e => {
+                  this.setState({
+                    selfie: {
+                      ...calculateAspectRatioFit(e.target as HTMLImageElement),
+                      show: true,
+                    },
+                  })
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </>
     )
   }
 
@@ -144,7 +226,7 @@ class App extends React.Component<{}, AppState> {
     <React.Fragment>
       <div className="app__description">
         Thank you for sharing! You told us your email is {this.state.email} and your
-        id doc is{this.renderIdDoc(this.state.idDoc)}
+        id doc properties are below{this.renderIdDoc(this.state.idDoc)}
       </div>
     </React.Fragment>
   )
