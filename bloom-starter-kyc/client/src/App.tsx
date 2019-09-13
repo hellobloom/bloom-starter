@@ -71,9 +71,9 @@ class App extends React.Component<{}, AppState> {
     }
     const {
       authentication_result,
-      biographic,
-      country,
-      date,
+      // biographic,
+      // country,
+      // date,
       name,
       facematch_result,
       images,
@@ -174,6 +174,7 @@ class App extends React.Component<{}, AppState> {
           this.setState(() => ({
             status: 'scanned',
             email: result.receivedData.email,
+            idDoc: result.receivedData.idDoc,
           }))
         })
         .catch(() => this.acquireSession())
