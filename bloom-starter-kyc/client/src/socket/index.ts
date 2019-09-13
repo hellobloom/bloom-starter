@@ -7,7 +7,7 @@ type SocketHandlers = {
 let socket: WebSocket;
 
 const host =
-  window.location.hostname === "localhost"
+  window.location.protocol.indexOf("s") === -1
     ? `ws://${window.location.hostname}:8080`
     : `wss://${window.location.hostname}`;
 
