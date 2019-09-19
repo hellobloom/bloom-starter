@@ -12,6 +12,7 @@ import {validateUntypedResponseData} from '@bloomprotocol/verify-kit'
 import {loggedInSession} from './middleware'
 import {applySocket, sendSocketMessage} from './socket'
 import {env} from './environment'
+import {Extractors} from '@bloomprotocol/attestations-lib'
 
 /**
  * WARNING: This "database" is NOT intended to be used in production applications.
@@ -88,7 +89,8 @@ app.post('/scan', async (req, res) => {
       })
       return
     }
-    console.log(verifiedData)
+
+    // email
     const consumableEmailData = verifiedData.data.verifiableCredential.find(
       data => data.type === 'email'
     )
@@ -96,17 +98,18 @@ app.post('/scan', async (req, res) => {
     if (!email || email.trim() === '') {
       throw new Error('Missing email')
     }
+    const emailStr = Extractors.extractBase(email, 'email', 'email')
 
+    // id-document
     const consumableIDDocData = verifiedData.data.verifiableCredential.find(
       data => data.type === 'id-document'
     )
-
     const idDoc = consumableIDDocData && consumableIDDocData.credentialSubject.data
     if (!idDoc || idDoc.trim() === '') {
       throw new Error('Missing idDoc')
     }
-
-    const sharePayload = JSON.stringify({email, idDoc: JSON.parse(idDoc)})
+    const idDocObj = Extractors.extractBase(idDoc, 'id-document', 'object')
+    const sharePayload = JSON.stringify({email: emailStr, idDoc: idDocObj})
     if (req.query['share-kit-from'] === 'button') {
       database[req.body.token] = sharePayload
     } else {
