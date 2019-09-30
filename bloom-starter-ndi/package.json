@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@bloomprotocol/attestations-lib": "^5.2.1-beta.4",
+    "@bloomprotocol/attestations-lib": "^5.2.1-beta.5",
     "@bloomprotocol/share-kit": "^7.2.1",
     "@bloomprotocol/verify-kit": "^1.0.1",
     "@types/compression": "^0.0.36",

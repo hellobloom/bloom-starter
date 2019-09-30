@@ -89,18 +89,30 @@ app.post('/scan', async (req, res) => {
       })
       return
     }
+    const ex = Extractors.extractBase
     console.log(verifiedData)
-    const consumableEmailData = verifiedData.data.verifiableCredential.find(
+    const emailData = verifiedData.data.verifiableCredential.find(
       data => data.type === 'email'
     )
-    const email = consumableEmailData && consumableEmailData.credentialSubject.data
-    if (!email || email.trim() === '') {
+    const consumableEmailData = emailData && emailData.credentialSubject.data
+    if (!consumableEmailData || consumableEmailData.trim() === '') {
       throw new Error('Missing email')
     }
+    const email = ex(consumableEmailData, 'email', 'email')
+
+    const phoneData = verifiedData.data.verifiableCredential.find(
+      data => data.type === 'phone'
+    )
+    const consumablePhoneData = phoneData && phoneData.credentialSubject.data
+    if (!consumablePhoneData || consumablePhoneData.trim() === '') {
+      throw new Error('Missing phone')
+    }
+
+    const phone = ex(consumablePhoneData, 'phone', 'number')
 
     const sharePayload = JSON.stringify({
       email,
-      phone: 'test-phone',
+      phone,
       fullname: 'test-name',
       address: 'test-address',
       income: 'test-income',
