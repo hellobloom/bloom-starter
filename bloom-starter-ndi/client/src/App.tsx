@@ -95,130 +95,12 @@ class App extends React.Component<{}, AppState> {
             org_name: 'Bloom Starter',
             org_usage_policy_url: 'https://bloom.co/legal/terms',
             org_privacy_policy_url: 'https://bloom.co/legal/privacy',
-            types: ['email', 'full-name', 'id-document', 'sanction-screen'],
+            types: ['email', 'full-name'],
           }}
           buttonCallbackUrl={buttonCallbackUrl}
           qrOptions={{size: 300}}
         />
       </React.Fragment>
-    )
-  }
-
-  private renderIdDoc = (idDoc?: IBaseAttIDDocData): React.ReactNode => {
-    if (!idDoc) {
-      return (
-        <span>
-          {' '}
-          unexpectedly missing{' '}
-          <span role="img" aria-label="sweat-smile">
-            😅
-          </span>
-          .
-        </span>
-      )
-    }
-    const {authentication_result, name, facematch_result, images} = idDoc
-    const success = (
-      <span role="img" aria-label="green-bg-white-checkmark">
-        ✅
-      </span>
-    )
-    const warning = (
-      <span role="img" aria-label="warning-sign">
-        ⚠️
-      </span>
-    )
-    const unknown = (
-      <span role="img" aria-label="red-question-mark">
-        ❓
-      </span>
-    )
-    const fail = (
-      <span role="img" aria-label="red-cross-mark">
-        ❌
-      </span>
-    )
-    return (
-      <>
-        .
-        <div className={'id-doc-wrap'}>
-          <div>
-            Authentication:{' '}
-            {authentication_result === 'passed'
-              ? success
-              : authentication_result === 'failed'
-              ? fail
-              : warning}
-          </div>
-          <div>
-            Facematch:{' '}
-            {facematch_result && facematch_result.is_match ? success : warning}
-          </div>
-          <div>Name: {name ? name : unknown}</div>
-
-          {images && (
-            <div className={'id-doc-img-wrap'}>
-              <label>{images.back ? 'Front' : 'Main'}</label>
-              <img
-                className={'id-doc-img'}
-                src={`data:image/png;base64,${images.front}`}
-                alt="front"
-                height={this.state.front.height}
-                width={this.state.front.width}
-                style={{display: this.state.front.show ? 'inline-block' : 'none'}}
-                onLoad={e => {
-                  this.setState({
-                    front: {
-                      ...calculateAspectRatioFit(e.target as HTMLImageElement),
-                      show: true,
-                    },
-                  })
-                }}
-              />
-
-              {images.back && (
-                <>
-                  <label>Back</label>
-                  <img
-                    className={'id-doc-img'}
-                    src={`data:image/png;base64,${images.back}`}
-                    alt="back"
-                    height={this.state.back.height}
-                    width={this.state.back.width}
-                    style={{display: this.state.back.show ? 'inline-block' : 'none'}}
-                    onLoad={e => {
-                      this.setState({
-                        back: {
-                          ...calculateAspectRatioFit(e.target as HTMLImageElement),
-                          show: true,
-                        },
-                      })
-                    }}
-                  />
-                </>
-              )}
-
-              <label>Selfie</label>
-              <img
-                className={'id-doc-img'}
-                src={`data:image/png;base64,${images.selfie}`}
-                alt="selfie"
-                height={this.state.selfie.height}
-                width={this.state.selfie.width}
-                style={{display: this.state.selfie.show ? 'inline-block' : 'none'}}
-                onLoad={e => {
-                  this.setState({
-                    selfie: {
-                      ...calculateAspectRatioFit(e.target as HTMLImageElement),
-                      show: true,
-                    },
-                  })
-                }}
-              />
-            </div>
-          )}
-        </div>
-      </>
     )
   }
 
@@ -256,7 +138,6 @@ class App extends React.Component<{}, AppState> {
           this.setState(() => ({
             status: 'scanned',
             email: result.receivedData.email,
-            idDoc: result.receivedData.idDoc,
           }))
         })
         .catch(() => this.acquireSession())
@@ -273,7 +154,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div className="app">
-        <h1 className="app__header">Welcome to Bloom Starter for KYC</h1>
+        <h1 className="app__header">Welcome to Bloom Starter for NDI</h1>
         {this.state.status === 'loading' && this.renderLoading()}
         {this.state.status === 'ready' && this.renderReady()}
         {this.state.status === 'scanned' && this.renderScanned()}

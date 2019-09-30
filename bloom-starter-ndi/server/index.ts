@@ -97,16 +97,7 @@ app.post('/scan', async (req, res) => {
       throw new Error('Missing email')
     }
 
-    const consumableIDDocData = verifiedData.data.verifiableCredential.find(
-      data => data.type === 'id-document'
-    )
-
-    const idDoc = consumableIDDocData && consumableIDDocData.credentialSubject.data
-    if (!idDoc || idDoc.trim() === '') {
-      throw new Error('Missing idDoc')
-    }
-
-    const sharePayload = JSON.stringify({email, idDoc: JSON.parse(idDoc)})
+    const sharePayload = JSON.stringify({email})
     if (req.query['share-kit-from'] === 'button') {
       database[req.body.token] = sharePayload
     } else {
