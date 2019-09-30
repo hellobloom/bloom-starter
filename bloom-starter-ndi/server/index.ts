@@ -120,11 +120,37 @@ app.post('/scan', async (req, res) => {
 
     const fullname = ex(consumableFullName, 'full-name', 'full')
 
+    console.log(consumableFullName)
+    console.log(fullname)
+
+    const addressData = verifiedData.data.verifiableCredential.find(
+      data => data.type === 'address'
+    )
+    const consumableAddress = addressData && addressData.credentialSubject.data
+    if (!consumableAddress || consumableAddress.trim() === '') {
+      throw new Error('Missing address')
+    }
+
+    const address = ex(consumableAddress, 'address', 'object')
+    let addressString = ''
+    try {
+      addressString =
+        addressString +
+        address.mailadd.block.value +
+        ' ' +
+        address.mailadd.street.value
+    } catch {
+      console.log('Address parsing failed')
+    }
+    console.log(consumableAddress)
+    console.log(address)
+    console.log(addressString)
+
     const sharePayload = JSON.stringify({
       email,
       phone,
       fullname,
-      address: 'test-address',
+      address: addressString,
       income: 'test-income',
     })
     if (req.query['share-kit-from'] === 'button') {
