@@ -8,6 +8,7 @@ import path from 'path'
 import http from 'http'
 import morgan from 'morgan'
 import {validateUntypedResponseData} from '@bloomprotocol/verify-kit'
+import {Extractors} from '@bloomprotocol/attestations-lib'
 
 import {loggedInSession} from './middleware'
 import {applySocket, sendSocketMessage} from './socket'

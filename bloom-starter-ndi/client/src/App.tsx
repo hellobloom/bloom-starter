@@ -107,8 +107,7 @@ class App extends React.Component<{}, AppState> {
   private renderScanned = () => (
     <React.Fragment>
       <div className="app__description">
-        Thank you for sharing! You told us your email is {this.state.email} and your
-        id doc properties are below{this.renderIdDoc(this.state.idDoc)}
+        Thank you for sharing! You told us your email is {this.state.email}
       </div>
     </React.Fragment>
   )
