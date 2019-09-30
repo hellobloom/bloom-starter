@@ -12,5 +12,13 @@ export const session = (): Promise<BaseResponse & {token: string}> =>
 export const getReceivedData = (
   token: string
 ): Promise<
-  BaseResponse & {receivedData: {email: string; idDoc: IBaseAttIDDocData}}
+  BaseResponse & {
+    receivedData: {
+      email: string
+      phone: string
+      fullname: string
+      address: string
+      income: string
+    }
+  }
 > => http.get(`/received-data?token=${encodeURIComponent(token)}`)

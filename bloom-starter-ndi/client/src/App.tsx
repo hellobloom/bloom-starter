@@ -17,10 +17,10 @@ type AppState = {
   status: 'loading' | 'ready' | 'scanned'
   token: string
   email?: string
-  idDoc?: IBaseAttIDDocData
-  front: TImgState
-  back: TImgState
-  selfie: TImgState
+  phone?: string
+  fullname?: string
+  address?: string
+  income?: string
 }
 
 /**
@@ -47,29 +47,13 @@ class App extends React.Component<{}, AppState> {
   readonly state: AppState = {
     status: 'loading',
     token: '',
-    front: {
-      show: false,
-      height: 0,
-      width: 0,
-    },
-    back: {
-      show: false,
-      height: 0,
-      width: 0,
-    },
-    selfie: {
-      show: false,
-      height: 0,
-      width: 0,
-    },
   }
 
-  private handleQRScan = (payload: {email: string; idDoc: IBaseAttIDDocData}) => {
-    console.log(typeof payload.idDoc)
+  private handleQRScan = (payload: {email: string; phone: string}) => {
     this.setState(() => ({
       status: 'scanned',
       email: payload.email,
-      idDoc: payload.idDoc,
+      phone: payload.phone,
     }))
   }
 

@@ -110,10 +110,20 @@ app.post('/scan', async (req, res) => {
 
     const phone = ex(consumablePhoneData, 'phone', 'number')
 
+    const fullNameData = verifiedData.data.verifiableCredential.find(
+      data => data.type === 'full-name'
+    )
+    const consumableFullName = fullNameData && fullNameData.credentialSubject.data
+    if (!consumableFullName || consumableFullName.trim() === '') {
+      throw new Error('Missing name')
+    }
+
+    const fullname = ex(consumableFullName, 'full-name', 'full')
+
     const sharePayload = JSON.stringify({
       email,
       phone,
-      fullname: 'test-name',
+      fullname,
       address: 'test-address',
       income: 'test-income',
     })
