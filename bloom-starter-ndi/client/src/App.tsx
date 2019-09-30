@@ -95,7 +95,7 @@ class App extends React.Component<{}, AppState> {
             org_name: 'Bloom Starter',
             org_usage_policy_url: 'https://bloom.co/legal/terms',
             org_privacy_policy_url: 'https://bloom.co/legal/privacy',
-            types: ['email', 'full-name'],
+            types: ['email', 'full-name', 'address', 'phone', 'income'],
           }}
           buttonCallbackUrl={buttonCallbackUrl}
           qrOptions={{size: 300}}
@@ -107,7 +107,9 @@ class App extends React.Component<{}, AppState> {
   private renderScanned = () => (
     <React.Fragment>
       <div className="app__description">
-        Thank you for sharing! You told us your email is {this.state.email}
+        Thank you for sharing, {this.state.fullname}! You told us your email is{' '}
+        {this.state.email}, address is {this.state.address}, phone is{' '}
+        {this.state.phone}, income is {this.state.income},
       </div>
     </React.Fragment>
   )
@@ -137,6 +139,10 @@ class App extends React.Component<{}, AppState> {
           this.setState(() => ({
             status: 'scanned',
             email: result.receivedData.email,
+            phone: result.receivedData.phone,
+            fullname: result.receivedData.fullname,
+            address: result.receivedData.address,
+            income: result.receivedData.income,
           }))
         })
         .catch(() => this.acquireSession())

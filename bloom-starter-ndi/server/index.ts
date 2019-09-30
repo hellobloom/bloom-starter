@@ -98,7 +98,13 @@ app.post('/scan', async (req, res) => {
       throw new Error('Missing email')
     }
 
-    const sharePayload = JSON.stringify({email})
+    const sharePayload = JSON.stringify({
+      email,
+      phone: 'test-phone',
+      fullname: 'test-name',
+      address: 'test-address',
+      income: 'test-income',
+    })
     if (req.query['share-kit-from'] === 'button') {
       database[req.body.token] = sharePayload
     } else {
