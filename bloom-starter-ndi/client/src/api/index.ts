@@ -18,6 +18,8 @@ export const getReceivedData = (
       phone: string
       fullname: string
       address: string
+      incomeLow: string
+      incomeHigh: string
       income: string
     }
   }

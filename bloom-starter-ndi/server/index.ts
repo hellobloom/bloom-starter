@@ -143,12 +143,36 @@ app.post('/scan', async (req, res) => {
     console.log(address)
     console.log(addressString)
 
+    const incomeData = verifiedData.data.verifiableCredential.find(
+      data => data.type === 'income'
+    )
+    const consumableIncome = incomeData && incomeData.credentialSubject.data
+    if (!consumableIncome || consumableIncome.trim() === '') {
+      throw new Error('Missing income')
+    }
+
+    const income = ex(consumableIncome, 'income', 'object')
+    let incomeLow = 0
+    let incomeHigh = 0
+    try {
+      incomeLow = income.low.value as number
+      incomeHigh = income.high.value as number
+    } catch {
+      console.log('income parsing failed')
+    }
+    console.log(consumableIncome)
+    console.log(income)
+    console.log(incomeLow)
+    console.log(incomeHigh)
+
     const sharePayload = JSON.stringify({
-      fullname,
+      fullname: JSON.stringify(fullname),
       email,
       phone,
-      address: addressString,
-      income: 'test-income',
+      address: JSON.stringify(addressString),
+      incomeLow: incomeLow.toString(),
+      incomeHigh: incomeHigh.toString(),
+      income: 'testincome',
     })
     if (req.query['share-kit-from'] === 'button') {
       database[req.body.token] = sharePayload

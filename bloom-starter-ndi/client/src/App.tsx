@@ -21,6 +21,8 @@ type AppState = {
   fullname?: string
   address?: string
   income?: string
+  incomeLow?: string
+  incomeHigh?: string
 }
 
 /**
@@ -127,6 +129,8 @@ class App extends React.Component<{}, AppState> {
             phone: result.receivedData.phone,
             address: result.receivedData.address,
             income: result.receivedData.income,
+            incomeLow: result.receivedData.incomeLow,
+            incomeHigh: result.receivedData.incomeHigh,
           }))
         })
         .catch(() => this.acquireSession())
