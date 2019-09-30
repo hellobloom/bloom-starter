@@ -135,10 +135,7 @@ app.post('/scan', async (req, res) => {
     let addressString = ''
     try {
       addressString =
-        addressString +
-        address.mailadd.block.value +
-        ' ' +
-        address.mailadd.street.value
+        addressString + address.block.value + ' ' + address.street.value
     } catch {
       console.log('Address parsing failed')
     }
@@ -147,9 +144,9 @@ app.post('/scan', async (req, res) => {
     console.log(addressString)
 
     const sharePayload = JSON.stringify({
+      fullname,
       email,
       phone,
-      fullname,
       address: addressString,
       income: 'test-income',
     })

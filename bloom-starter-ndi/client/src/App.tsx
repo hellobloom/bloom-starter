@@ -122,9 +122,9 @@ class App extends React.Component<{}, AppState> {
           console.log('api.getReceivedData() result', result)
           this.setState(() => ({
             status: 'scanned',
+            fullname: result.receivedData.fullname,
             email: result.receivedData.email,
             phone: result.receivedData.phone,
-            fullname: result.receivedData.fullname,
             address: result.receivedData.address,
             income: result.receivedData.income,
           }))
