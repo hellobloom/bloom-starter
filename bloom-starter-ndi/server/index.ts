@@ -166,10 +166,10 @@ app.post('/scan', async (req, res) => {
     console.log(incomeHigh)
 
     const sharePayload = JSON.stringify({
-      fullname: JSON.stringify(fullname),
+      fullname: fullname,
       email,
       phone,
-      address: JSON.stringify(addressString),
+      address: addressString,
       incomeLow: incomeLow.toString(),
       incomeHigh: incomeHigh.toString(),
       income: 'testincome',
