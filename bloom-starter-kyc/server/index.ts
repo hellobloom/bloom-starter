@@ -108,7 +108,11 @@ app.post('/scan', async (req, res) => {
     if (!idDoc || idDoc.trim() === '') {
       throw new Error('Missing idDoc')
     }
-    const idDocObj = Extractors.extractBase(idDoc, 'id-document', 'object')
+    const idDocObj = Extractors.extractBase(
+      JSON.stringify({data: JSON.parse(idDoc)}), // format data as extractor expects
+      'id-document',
+      'object'
+    )
     const sharePayload = JSON.stringify({email: emailStr, idDoc: idDocObj})
     if (req.query['share-kit-from'] === 'button') {
       database[req.body.token] = sharePayload
