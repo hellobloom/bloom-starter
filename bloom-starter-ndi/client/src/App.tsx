@@ -1,11 +1,11 @@
 import React from 'react'
-import { RequestElement, Action } from '@bloomprotocol/share-kit-react'
+import {RequestElement, Action} from '@bloomprotocol/share-kit-react'
 
 import * as api from './api'
-import { socketOn, socketOff, initSocketConnection } from './socket'
+import {socketOn, socketOff, initSocketConnection} from './socket'
 
 import './App.css'
-import { IBaseAttIDDocData } from '@bloomprotocol/attestations-lib/dist/AttestationData'
+import {IBaseAttIDDocData} from '@bloomprotocol/attestations-lib/dist/AttestationData'
 
 type TImgState = {
   height: number
@@ -42,7 +42,7 @@ function calculateAspectRatioFit(imgEl: HTMLImageElement) {
   const maxWidth = 360
   const maxHeight = 480
   var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight)
-  return { width: srcWidth * ratio, height: srcHeight * ratio }
+  return {width: srcWidth * ratio, height: srcHeight * ratio}
 }
 
 class App extends React.Component<{}, AppState> {
@@ -51,7 +51,15 @@ class App extends React.Component<{}, AppState> {
     token: '',
   }
 
-  private handleQRScan = (payload: { email: string; phone: string; fullname: string; address: string; income: string; incomeLow: string; incomeHigh: string }) => {
+  private handleQRScan = (payload: {
+    email: string
+    phone: string
+    fullname: string
+    address: string
+    income: string
+    incomeLow: string
+    incomeHigh: string
+  }) => {
     this.setState(() => ({
       status: 'scanned',
       email: payload.email,
@@ -77,7 +85,7 @@ class App extends React.Component<{}, AppState> {
       <React.Fragment>
         <p className="app__description">Please scan the QR code to continue</p>
         <RequestElement
-          {...{ className: 'app__request-element-container' }}
+          {...{className: 'app__request-element-container'}}
           requestData={{
             action: Action.attestation,
             token: this.state.token,
@@ -88,8 +96,8 @@ class App extends React.Component<{}, AppState> {
             org_privacy_policy_url: 'https://bloom.co/legal/privacy',
             types: ['email', 'full-name', 'address', 'phone', 'income'],
           }}
-          buttonCallbackUrl={buttonCallbackUrl}
-          qrOptions={{ size: 300 }}
+          buttonOptions={{callbackUrl: buttonCallbackUrl}}
+          qrOptions={{size: 300}}
         />
       </React.Fragment>
     )
@@ -100,7 +108,8 @@ class App extends React.Component<{}, AppState> {
       <div className="app__description">
         Thank you for sharing, {this.state.fullname}! You told us your email is{' '}
         {this.state.email}, address is {this.state.address}, phone is{' '}
-        {this.state.phone}, income is between {this.state.incomeLow} and {this.state.incomeHigh},
+        {this.state.phone}, income is between {this.state.incomeLow} and{' '}
+        {this.state.incomeHigh},
       </div>
     </React.Fragment>
   )
@@ -112,7 +121,7 @@ class App extends React.Component<{}, AppState> {
         console.log('api.session() result', result)
         initSocketConnection()
         socketOn('share-kit-scan', this.handleQRScan)
-        this.setState(() => ({ status: 'ready', token: result.token }))
+        this.setState(() => ({status: 'ready', token: result.token}))
       })
       .catch(() => {
         console.warn('Something went wrong while starting a session')
