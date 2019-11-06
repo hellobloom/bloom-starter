@@ -88,6 +88,7 @@ app.post('/scan', async (req, res) => {
         verifiedData,
       })
       return
+      web3Provider: env.web3Provider
     }
 
     // email
@@ -125,6 +126,20 @@ app.post('/scan', async (req, res) => {
     }
 
     res.status(200).json({success: true, message: 'Message Sent'})
+    /* =======
+    const sharePayload = JSON.stringify({ email });
+    if (req.query["share-kit-from"] === "button") {
+      database[req.body.token] = sharePayload;
+    } else {
+      await sendSocketMessage({
+        userId: req.body.token,
+        type: "share-kit-scan",
+        payload: sharePayload
+      });
+    }
+
+    res.status(200).json({ success: true, message: "Message Sent" });
+>>>>>>> origin/update-deps/dev */
   } catch (err) {
     if (err.message === 'Missing email') {
       res.status(404).send({
