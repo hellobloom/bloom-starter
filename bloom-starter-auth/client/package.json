@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@bloomprotocol/share-kit-react": "^4.0.0",
+    "@bloomprotocol/verify-kit": "^1.1.1",
     "@types/react": "^16.7.20",
     "@types/react-dom": "^16.0.11",
     "react": "^16.7.0",

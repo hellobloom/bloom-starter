@@ -1,4 +1,4 @@
-# bloom-starter-kyc
+# bloom-starter-auth
 
 > Bloom Starter KYC written in React + Express
 
@@ -9,7 +9,7 @@ There are two parts to this app the server-side (express) and client-side (react
 ### Geting started
 
 1. `git clone https://github.com/hellobloom/bloom-starter.git`
-2. `cd bloom-starter/bloom-starter-kyc`
+2. `cd bloom-starter/bloom-starter-auth`
 3. `npm run deps` (install dependencies for server and client)
 4. Before starting up the dev server, you will need a `.env` file with
    these variables set: `PORT`, `NODE_ENV`, and `SESSION_SECRET`. See
@@ -47,21 +47,21 @@ Commands must be done from the root of the git project.
 
 #### Init heroku (one time)
 
-Assuming that your heroku app is called `bloom-starter-kyc`.
+Assuming that your heroku app is called `bloom-starter-auth`.
 
 ```
 heroku login
-heroku git:remote -a bloom-starter-kyc
+heroku git:remote -a bloom-starter-auth
 ```
 
 #### Push latest:
 
 ```
-git subtree push --prefix bloom-starter-kyc heroku master
+git subtree push --prefix bloom-starter-auth heroku master
 ```
 
 #### Push latest (not master branch):
 
 ```
-git push -f heroku `git subtree split --prefix bloom-starter-kyc SIDE_BRANCH_NAME`:master
+git push -f heroku `git subtree split --prefix bloom-starter-auth SIDE_BRANCH_NAME`:master
 ```
