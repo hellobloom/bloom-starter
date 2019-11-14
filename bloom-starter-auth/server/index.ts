@@ -89,7 +89,6 @@ app.post('/scan', async (req, res) => {
     if (req.query['share-kit-from'] === 'button') {
       database[req.body.proof.nonce] = sharePayload
     } else {
-      console.log('req.body', req.body)
       await sendSocketMessage({
         userId: req.body.proof.nonce,
         type: 'share-kit-scan',

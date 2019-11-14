@@ -13,9 +13,7 @@ export const sendSocketMessage = (message: {
   type: string
   payload: string
 }) => {
-  console.log('Websockets', webSockets)
   const socket = webSockets[message.userId]
-  console.log('Sending msg to socket', socket, message)
 
   if (socket === undefined) return
 
@@ -43,7 +41,6 @@ export const applySocket = (
   })
 
   wss.on('connection', (ws, req) => {
-    console.log('WS SESSION', (req as any).session)
     webSockets[(req as any).session.userId] = ws
   })
 }

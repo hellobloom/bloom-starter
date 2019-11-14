@@ -64,7 +64,6 @@ class App extends React.Component<{}, AppState> {
     api
       .session()
       .then(result => {
-        console.log('api.session() result', result)
         initSocketConnection()
         socketOn('share-kit-scan', this.handleQRScan)
         this.setState(() => ({status: 'ready', token: result.token}))
