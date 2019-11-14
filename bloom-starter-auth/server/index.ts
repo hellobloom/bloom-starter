@@ -7,12 +7,11 @@ import uuid from 'uuid'
 import path from 'path'
 import http from 'http'
 import morgan from 'morgan'
-import {validateUntypedResponseData} from '@bloomprotocol/verify-kit'
+import {validateVerifiableAuth} from '@bloomprotocol/verify-kit'
 
 import {loggedInSession} from './middleware'
 import {applySocket, sendSocketMessage} from './socket'
 import {env} from './environment'
-import {Extractors} from '@bloomprotocol/attestations-lib'
 
 /**
  * WARNING: This "database" is NOT intended to be used in production applications.
@@ -77,49 +76,21 @@ app.delete('/clear-session', loggedInSession, (req, res) => {
 
 app.post('/scan', async (req, res) => {
   try {
-    const verifiedData = await validateUntypedResponseData(req.body, {
-      validateOnChain: env.validateOnChain,
-      web3Provider: env.web3Provider,
-    })
-    if (verifiedData.kind === 'invalid') {
+    const verifiedData = await validateVerifiableAuth(req.body)
+    if (verifiedData.kind === 'invalid_param') {
       res.status(400).json({
         success: false,
         message: 'Shared data is not valid',
         verifiedData,
       })
       return
-      web3Provider: env.web3Provider
     }
-
-    // email
-    const consumableEmailData = verifiedData.data.verifiableCredential.find(
-      data => data.type === 'email'
-    )
-    const email = consumableEmailData && consumableEmailData.credentialSubject.data
-    if (!email || email.trim() === '') {
-      throw new Error('Missing email')
-    }
-    const emailStr = Extractors.extractBase(email, 'email', 'email')
-
-    // id-document
-    const consumableIDDocData = verifiedData.data.verifiableCredential.find(
-      data => data.type === 'id-document'
-    )
-    const idDoc = consumableIDDocData && consumableIDDocData.credentialSubject.data
-    if (!idDoc || idDoc.trim() === '') {
-      throw new Error('Missing idDoc')
-    }
-    const idDocObj = Extractors.extractBase(
-      JSON.stringify({data: JSON.parse(idDoc)}), // format data as extractor expects
-      'id-document',
-      'object'
-    )
-    const sharePayload = JSON.stringify({email: emailStr, idDoc: idDocObj})
+    const sharePayload = JSON.stringify({address: req.body.creator})
     if (req.query['share-kit-from'] === 'button') {
-      database[req.body.token] = sharePayload
+      database[req.body.proof.nonce] = sharePayload
     } else {
       await sendSocketMessage({
-        userId: req.body.token,
+        userId: req.body.proof.nonce,
         type: 'share-kit-scan',
         payload: sharePayload,
       })
@@ -127,17 +98,10 @@ app.post('/scan', async (req, res) => {
 
     res.status(200).json({success: true, message: 'Message Sent'})
   } catch (err) {
-    if (err.message === 'Missing email') {
-      res.status(404).send({
-        success: false,
-        message: 'Email is missing from completed attestations',
-      })
-    } else {
-      res.status(500).send({
-        success: false,
-        message: 'Something went wrong while sending message',
-      })
-    }
+    res.status(500).send({
+      success: false,
+      message: 'Something went wrong while sending message',
+    })
   }
 })
 
