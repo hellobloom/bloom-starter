@@ -18,6 +18,7 @@ const initSocketConnection = () => {
 
   socket.onmessage = (e: MessageEvent) => {
     try {
+      console.log('Socket message', e)
       const decoded = JSON.parse(e.data)
       if (decoded instanceof Array) {
         const callbacks = socketHandlers[decoded[0]]
