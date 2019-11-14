@@ -89,6 +89,7 @@ app.post('/scan', async (req, res) => {
     if (req.query['share-kit-from'] === 'button') {
       database[req.body.token] = sharePayload
     } else {
+      console.log('req.body', req.body)
       await sendSocketMessage({
         userId: req.body.token,
         type: 'share-kit-scan',
