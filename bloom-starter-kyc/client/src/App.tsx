@@ -104,7 +104,7 @@ class App extends React.Component<{}, AppState> {
     )
   }
 
-  private renderIdDoc = (idDoc?: IBaseAttIDDocData): React.ReactNode => {
+  private renderIdDoc = (idDoc?: IBaseAttIDDocData & {images?:{back?: string, front?: string, selfie?: string}}): React.ReactNode => {
     if (!idDoc) {
       return (
         <span>
