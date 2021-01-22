@@ -273,7 +273,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div className="app">
-        <h1 className="app__header">Welcome to Bloom Starter for KYC</h1>
+        <h1 className="app__header">Share credit data</h1>
         {this.state.status === 'loading' && this.renderLoading()}
         {this.state.status === 'ready' && this.renderReady()}
         {this.state.status === 'scanned' && this.renderScanned()}
